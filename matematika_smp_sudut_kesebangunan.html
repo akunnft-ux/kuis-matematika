@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematika SMP: Sudut & Kesebangunan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Library html2canvas untuk membuat tangkapan layar (screenshot) kartu hasil kuis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .tab-active {
+            background-color: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+        .tab-inactive {
+            background-color: #ffffff;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+        .tab-inactive:hover {
+            background-color: #f1f5f9;
+        }
+        .fade-in {
+            animation: fadeIn 0.35s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom range slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white shadow-lg">
+        <div class="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <span class="inline-block bg-blue-500/30 border border-blue-400/30 text-blue-100 text-xs font-semibold px-3 py-1 rounded-full mb-2">
+                        Matematika SMP • MTs Istimewa Amanatul Ummah
+                    </span>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                        Eksplorasi Sudut & Kesebangunan
+                    </h1>
+                    <p class="text-blue-100 text-sm sm:text-base mt-1">
+                        Pahami konsep sudut berpenyiku, berpelurus, dan kesebangunan bangun datar secara visual dan interaktif.
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/15 self-start">
+                    <svg class="w-6 h-6 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <div class="text-xs">
+                        <div class="font-semibold text-white">Mode Belajar Aktif</div>
+                        <div class="text-blue-200">Simulasi & Kuis Digital</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 -mt-5">
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 bg-white/80 backdrop-blur-md p-2 rounded-2xl shadow-md border border-slate-200/80">
+            <button id="btn-tab-sudut" onclick="switchTab('sudut')" class="tab-active py-3 px-3 sm:px-5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
+                <span>📐</span>
+                <span>1. Materi Sudut</span>
+            </button>
+            <button id="btn-tab-kesebangunan" onclick="switchTab('kesebangunan')" class="tab-inactive py-3 px-3 sm:px-5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
+                <span>🔷</span>
+                <span>2. Kesebangunan</span>
+            </button>
+            <button id="btn-tab-kuis" onclick="switchTab('kuis')" class="tab-inactive py-3 px-3 sm:px-5 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-2">
+                <span>🎯</span>
+                <span>3. Kuis Interaktif</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+
+        <!-- ==================== TAB 1: MATERI SUDUT ==================== -->
+        <section id="section-sudut" class="fade-in space-y-8">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-extrabold">A</span>
+                    Hubungan Antar Sudut
+                </h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base leading-relaxed">
+                    Sudut terbentuk dari dua sinar garis yang bertemu pada satu titik pangkal. Dalam geometri SMP, dua sudut yang saling berdampingan memiliki hubungan istimewa jika jumlah besar sudutnya membentuk <strong>sudut siku-siku (90°)</strong> atau <strong>sudut lurus (180°)</strong>.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div class="bg-blue-50/70 rounded-xl p-5 border border-blue-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-blue-900 text-lg">1. Sudut Siku-Siku & Berpenyiku</h3>
+                            <span class="bg-blue-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Total = 90°</span>
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                            <strong>Sudut siku-siku</strong> memiliki besar tepat <strong>90°</strong>. Jika dua sudut digabungkan dan membentuk sudut siku-siku, keduanya disebut <strong>saling berpenyiku (komplemen)</strong>.
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-blue-100 text-center font-mono text-sm font-bold text-blue-800">
+                            ∠a + ∠b = 90°
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-50/70 rounded-xl p-5 border border-indigo-200">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-indigo-900 text-lg">2. Sudut Lurus & Berpelurus</h3>
+                            <span class="bg-indigo-600 text-white text-xs font-bold px-2.5 py-1 rounded-md">Total = 180°</span>
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed mb-3">
+                            <strong>Sudut lurus</strong> membentuk garis lurus dengan besar tepat <strong>180°</strong>. Jika dua sudut membentuk garis lurus, keduanya disebut <strong>saling berpelurus (suplemen)</strong>.
+                        </p>
+                        <div class="bg-white p-3 rounded-lg border border-indigo-100 text-center font-mono text-sm font-bold text-indigo-800">
+                            ∠x + ∠y = 180°
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Lab: Sudut -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600">Laboratorium Interaktif</span>
+                        <h3 class="text-lg font-bold text-slate-800">Simulasi Penyiku & Pelurus</h3>
+                    </div>
+                    <div class="inline-flex rounded-lg bg-slate-100 p-1 self-start">
+                        <button id="mode-penyiku" onclick="setAngleMode('penyiku')" class="px-3 py-1.5 text-xs font-bold rounded-md bg-white text-blue-700 shadow-sm transition">
+                            Berpenyiku (90°)
+                        </button>
+                        <button id="mode-pelurus" onclick="setAngleMode('pelurus')" class="px-3 py-1.5 text-xs font-bold rounded-md text-slate-600 hover:text-slate-900 transition">
+                            Berpelurus (180°)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-7 bg-slate-50 rounded-xl border border-slate-200 p-4 flex items-center justify-center">
+                        <svg id="angle-svg" viewBox="0 0 360 220" class="w-full max-w-md h-auto overflow-visible"></svg>
+                    </div>
+
+                    <div class="md:col-span-5 space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-1">
+                                <span class="text-slate-700">Geser Besar Sudut Utama (α):</span>
+                                <span id="angle-alpha-label" class="text-blue-600">35°</span>
+                            </div>
+                            <input type="range" id="angle-slider" min="5" max="85" value="35" oninput="updateAngleSim()" class="w-full">
+                        </div>
+
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 space-y-2.5">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="flex items-center gap-2 font-medium text-slate-600">
+                                    <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
+                                    Sudut α:
+                                </span>
+                                <span id="readout-alpha" class="font-bold text-slate-900">35°</span>
+                            </div>
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="flex items-center gap-2 font-medium text-slate-600">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                                    <span id="readout-beta-name">Sudut Penyiku (β):</span>
+                                </span>
+                                <span id="readout-beta" class="font-bold text-emerald-700">55°</span>
+                            </div>
+                            <div class="border-t border-slate-200 pt-2 flex justify-between items-center text-sm font-bold">
+                                <span class="text-slate-700">Total Sudut:</span>
+                                <span id="readout-total" class="text-indigo-700">35° + 55° = 90°</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 text-xs text-amber-900 leading-relaxed">
+                            <strong>💡 Tips Cepat:</strong><br>
+                            • Penyiku dari sudut <em>x</em> adalah 90° − <em>x</em>.<br>
+                            • Pelurus dari sudut <em>x</em> adalah 180° − <em>x</em>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <h3 class="text-lg font-bold text-slate-800 mb-3">📝 Contoh Penerapan Aljabar pada Sudut</h3>
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-sm space-y-2">
+                    <p class="font-semibold text-slate-800">
+                        Soal: Dua sudut saling berpelurus memiliki besar (3<em>x</em> + 15)° dan (2<em>x</em> + 10)°. Tentukan nilai <em>x</em> dan besar sudut pertama!
+                    </p>
+                    <div class="text-slate-600 pl-3 border-l-2 border-blue-500 space-y-1">
+                        <p><strong>Langkah 1:</strong> Karena berpelurus, jumlah kedua sudut adalah 180°.</p>
+                        <p>(3<em>x</em> + 15) + (2<em>x</em> + 10) = 180</p>
+                        <p>5<em>x</em> + 25 = 180 &rarr; 5<em>x</em> = 155 &rarr; <em>x</em> = 31°</p>
+                        <p><strong>Langkah 2:</strong> Substitusi <em>x</em> = 31° ke sudut pertama: 3(31) + 15 = 93 + 15 = <strong>108°</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: KESEBANGUNAN ==================== -->
+        <section id="section-kesebangunan" class="hidden fade-in space-y-8">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-extrabold">B</span>
+                    Kesebangunan Bangun Datar (~)
+                </h2>
+                <p class="text-slate-600 mt-2 text-sm sm:text-base leading-relaxed">
+                    Dua bangun datar dikatakan <strong>sebangun</strong> jika memiliki <strong>bentuk yang sama</strong>, meskipun ukurannya bisa berbeda (diperbesar atau diperkecil secara proporsional).
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-5 mt-6">
+                    <div class="bg-emerald-50/70 border border-emerald-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 font-bold text-emerald-900 mb-2">
+                            <span class="bg-emerald-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                            Sudut-Sudut Bersesuaian Sama Besar
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Setiap sudut pada bangun pertama memiliki besar yang tepat sama dengan sudut yang seletak pada bangun kedua (∠A = ∠P, ∠B = ∠Q, dst).
+                        </p>
+                    </div>
+
+                    <div class="bg-purple-50/70 border border-purple-200 rounded-xl p-5">
+                        <div class="flex items-center gap-2 font-bold text-purple-900 mb-2">
+                            <span class="bg-purple-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                            Sisi-Sisi Bersesuaian Sebanding
+                        </div>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Perbandingan panjang sisi-sisi yang seletak selalu menghasilkan nilai rasio (faktor skala <em>k</em>) yang sama:
+                            <span class="block font-mono font-bold text-purple-800 mt-1">AB / PQ = BC / QR = CD / RS = k</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="mb-4">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Laboratorium Interaktif</span>
+                    <h3 class="text-lg font-bold text-slate-800">Uji Faktor Skala Persegi Panjang Sebangun</h3>
+                    <p class="text-xs sm:text-sm text-slate-500">Geser faktor skala (<em>k</em>) untuk melihat bagaimana bangun berubah ukuran tetapi tetap sebangun.</p>
+                </div>
+
+                <div class="grid md:grid-cols-12 gap-6 items-center">
+                    <div class="md:col-span-7 bg-slate-50 rounded-xl border border-slate-200 p-4 flex items-center justify-center">
+                        <svg id="sim-svg" viewBox="0 0 400 220" class="w-full max-w-lg h-auto"></svg>
+                    </div>
+
+                    <div class="md:col-span-5 space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-1">
+                                <span class="text-slate-700">Faktor Skala (<em>k</em>):</span>
+                                <span id="scale-val-label" class="text-indigo-600">1.5x</span>
+                            </div>
+                            <input type="range" id="scale-slider" min="0.5" max="2.0" step="0.25" value="1.5" oninput="updateSimilaritySim()" class="w-full">
+                        </div>
+
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 text-xs sm:text-sm space-y-2">
+                            <div class="font-bold text-slate-800 border-b border-slate-200 pb-1.5">Perbandingan Sisi Bersesuaian:</div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Panjang (P₂ / P₁):</span>
+                                <span id="ratio-p" class="font-mono font-bold text-indigo-700">12 / 8 = 1.5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Lebar (L₂ / L₁):</span>
+                                <span id="ratio-l" class="font-mono font-bold text-indigo-700">6 / 4 = 1.5</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-600">Sudut Pojok:</span>
+                                <span class="font-mono font-bold text-emerald-700">90° = 90° (Sama)</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 text-xs text-blue-900">
+                            <strong>Rumus Cepat Segitiga Sebangun (Garis Sejajar):</strong><br>
+                            Jika garis DE sejajar BC pada △ABC, maka:<br>
+                            <span class="font-mono font-bold">AD / AB = AE / AC = DE / BC</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: KUIS INTERAKTIF ==================== -->
+        <section id="section-kuis" class="hidden fade-in">
+            
+            <!-- STEP 1: FORM IDENTITAS SISWA SEBELUM KUIS -->
+            <div id="quiz-intro-view" class="bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200 max-w-xl mx-auto">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+                        📝
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-slate-800">Data Peserta Kuis</h2>
+                    <p class="text-slate-500 text-sm mt-1">
+                        Silakan isi nama lengkap dan pilih kelasmu sebelum memulai 10 soal evaluasi.
+                    </p>
+                </div>
+
+                <form id="student-form" onsubmit="startQuiz(event)" class="space-y-5">
+                    <div>
+                        <label for="student-name" class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Nama Lengkap Siswa <span class="text-rose-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="student-name" 
+                            required 
+                            placeholder="Contoh: Ahmad Fauzan"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-slate-800 font-medium"
+                        >
+                    </div>
+
+                    <div>
+                        <label for="student-class" class="block text-sm font-bold text-slate-700 mb-1.5">
+                            Pilih Kelas <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <select 
+                                id="student-class" 
+                                required
+                                class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition text-slate-800 font-medium bg-white appearance-none cursor-pointer"
+                            >
+                                <option value="" disabled selected>-- Pilih Kelas --</option>
+                                <option value="Kelas 7">Kelas 7</option>
+                                <option value="Kelas 8">Kelas 8</option>
+                                <option value="Kelas 9">Kelas 9</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50/70 border border-blue-100 rounded-xl p-3.5 text-xs text-blue-800 flex items-start gap-2.5">
+                        <span class="text-base">ℹ️</span>
+                        <span>Setelah selesai mengerjakan kuis, sistem akan otomatis membuat bukti gambar (screenshot) nilai untuk dikirimkan ke guru.</span>
+                    </div>
+
+                    <button 
+                        type="submit" 
+                        class="w-full py-3.5 px-6 rounded-xl font-bold text-base text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition shadow-md shadow-blue-600/20 flex items-center justify-center gap-2"
+                    >
+                        <span>🚀 Mulai Mengerjakan Kuis</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 2: AREA SOAL KUIS AKTIF -->
+            <div id="quiz-active-view" class="hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                <!-- Student Info Strip -->
+                <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-200 mb-5 text-xs sm:text-sm">
+                    <div class="flex items-center gap-2 font-semibold text-slate-700">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <span id="active-student-display">Siswa: -</span>
+                    </div>
+                    <span id="active-class-display" class="font-bold text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-md">
+                        Kelas -
+                    </span>
+                </div>
+
+                <!-- Top Bar: Progress & Score -->
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <span id="quiz-badge" class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">
+                            Soal 1 dari 10
+                        </span>
+                        <span id="quiz-topic-tag" class="bg-slate-100 text-slate-600 text-xs font-semibold px-2.5 py-1 rounded-md">
+                            Sudut Berpenyiku
+                        </span>
+                    </div>
+                    <div class="text-sm font-bold text-slate-700">
+                        Skor Sementara: <span id="quiz-live-score" class="text-blue-600">0</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-6">
+                    <div id="quiz-progress-bar" class="bg-blue-600 h-full transition-all duration-300" style="width: 10%;"></div>
+                </div>
+
+                <!-- Visual Diagram Area -->
+                <div id="quiz-diagram-container" class="hidden mb-6 bg-slate-50 border border-slate-200 rounded-xl p-4 flex justify-center"></div>
+
+                <!-- Question Text -->
+                <h3 id="quiz-question-text" class="text-lg sm:text-xl font-bold text-slate-800 leading-snug mb-6">
+                    Memuat pertanyaan...
+                </h3>
+
+                <!-- Options Grid -->
+                <div id="quiz-options-container" class="space-y-3"></div>
+
+                <!-- Feedback & Pembahasan Box -->
+                <div id="quiz-feedback-box" class="hidden mt-6 p-4 rounded-xl border text-sm leading-relaxed">
+                    <div id="quiz-feedback-title" class="font-bold text-base mb-1"></div>
+                    <p id="quiz-feedback-explanation" class="text-slate-700"></p>
+                </div>
+
+                <!-- Navigation Footer -->
+                <div class="mt-8 flex items-center justify-between">
+                    <button id="btn-hint" onclick="toggleHint()" class="text-xs sm:text-sm font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3.5 py-2 rounded-lg transition">
+                        💡 Lihat Petunjuk
+                    </button>
+                    <button id="btn-next-question" onclick="nextQuestion()" disabled class="px-6 py-2.5 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed transition shadow-sm">
+                        Soal Berikutnya →
+                    </button>
+                </div>
+
+                <!-- Hint Box -->
+                <div id="quiz-hint-box" class="hidden mt-4 p-3 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900"></div>
+            </div>
+
+            <!-- STEP 3: HALAMAN HASIL & KIRIM SCREENSHOT NILAI -->
+            <div id="quiz-result-view" class="hidden max-w-2xl mx-auto space-y-6">
+                
+                <!-- KARTU YANG AKAN DI-SCREENSHOT OTOMATIS -->
+                <div id="score-capture-card" class="bg-white rounded-2xl p-6 sm:p-8 shadow-md border-2 border-blue-200 text-center relative overflow-hidden">
+                    <!-- Decorative top bar -->
+                    <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500"></div>
+                    
+                    <div class="text-xs font-extrabold uppercase tracking-widest text-blue-600 mb-1">
+                        Laporan Hasil Evaluasi Matematika
+                    </div>
+                    <div class="text-xs text-slate-400 mb-4" id="result-timestamp">
+                        MTs Istimewa Amanatul Ummah
+                    </div>
+
+                    <div id="result-emoji" class="text-5xl mb-3">🏆</div>
+                    <h2 class="text-2xl font-extrabold text-slate-800">Kuis Selesai!</h2>
+                    <p id="result-subtitle" class="text-slate-600 mt-1 text-sm">
+                        Berikut adalah bukti capaian hasil kuis siswa.
+                    </p>
+
+                    <!-- Identitas Siswa pada Kartu Screenshot -->
+                    <div class="mt-5 bg-slate-50 border border-slate-200 rounded-xl p-4 text-left grid grid-cols-2 gap-3">
+                        <div>
+                            <div class="text-[11px] font-bold uppercase text-slate-400">Nama Siswa</div>
+                            <div id="result-student-name" class="text-sm sm:text-base font-extrabold text-slate-800 truncate">-</div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] font-bold uppercase text-slate-400">Kelas</div>
+                            <div id="result-student-class" class="text-sm sm:text-base font-extrabold text-blue-700">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Kotak Nilai Akhir -->
+                    <div class="my-5 bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-2xl p-6 shadow-inner">
+                        <div class="text-xs font-bold uppercase tracking-wider text-blue-100">Nilai Akhir</div>
+                        <div id="result-score-big" class="text-6xl font-black my-1">100</div>
+                        <div id="result-detail-text" class="text-sm font-medium text-blue-100">
+                            Benar 10 dari 10 soal
+                        </div>
+                    </div>
+
+                    <div class="text-[11px] text-slate-400 font-medium">
+                        Topik: Sudut Berpenyiku, Sudut Berpelurus & Kesebangunan
+                    </div>
+                </div>
+
+                <!-- TOMBOL AKSI UTAMA: KIRIM NILAI (SCREENSHOT) & ULANGI -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 space-y-3">
+                    <button 
+                        id="btn-send-score" 
+                        onclick="captureAndOpenSendModal()" 
+                        class="w-full py-3.5 px-6 rounded-xl font-extrabold text-base text-white bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2.5"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>📸 Kirim Nilai (Screenshot ke Guru)</span>
+                    </button>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button onclick="restartQuiz()" class="py-3 px-4 rounded-xl font-bold text-sm text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 transition">
+                            🔄 Ulangi Kuis (Acak Soal)
+                        </button>
+                        <button onclick="switchTab('sudut')" class="py-3 px-4 rounded-xl font-bold text-sm text-slate-700 bg-slate-100 hover:bg-slate-200 transition">
+                            📖 Pelajari Materi Lagi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL PREVIEW SCREENSHOT & KIRIM KE WHATSAPP / EMAIL -->
+    <div id="send-modal" class="hidden fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 fade-in my-8">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                <h3 class="text-lg font-extrabold text-slate-800 flex items-center gap-2">
+                    <span>📤</span> Kirim Screenshot Nilai ke Guru
+                </h3>
+                <button onclick="closeSendModal()" class="text-slate-400 hover:text-slate-700 p-1 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Status / Info Screenshot -->
+            <div id="screenshot-status-banner" class="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs rounded-xl p-3 mb-4 flex items-center gap-2">
+                <span class="text-base">✅</span>
+                <span>Screenshot nilai berhasil dibuat! Gambar telah diunduh otomatis & siap dikirim.</span>
+            </div>
+
+            <!-- Preview Gambar Hasil Screenshot -->
+            <div class="bg-slate-100 rounded-xl p-3 border border-slate-200 mb-4 flex justify-center">
+                <img id="screenshot-preview-img" src="" alt="Preview Screenshot Nilai" class="max-h-60 rounded-lg shadow-sm border border-slate-300 object-contain">
+            </div>
+
+            <!-- Input Opsional Kontak Guru -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">No. WhatsApp Guru (Opsional)</label>
+                    <input type="tel" id="teacher-wa-input" placeholder="Contoh: 6281234567890" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-emerald-500 outline-none">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">Email Guru (Opsional)</label>
+                    <input type="email" id="teacher-email-input" placeholder="Contoh: guru@mts.sch.id" class="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-blue-500 outline-none">
+                </div>
+            </div>
+
+            <!-- Tombol Kirim via WA, Email, atau Share Native -->
+            <div class="space-y-2.5">
+                <!-- Native Web Share (Jika didukung HP/Browser untuk langsung kirim file gambar ke WA/Email) -->
+                <button id="btn-native-share" onclick="shareNativeFile()" class="hidden w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-indigo-600 hover:bg-indigo-700 transition flex items-center justify-center gap-2 shadow-sm">
+                    <span>📲 Bagikan Gambar Langsung (WA / Email / Lainnya)</span>
+                </button>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <button onclick="sendViaWhatsApp()" class="py-3 px-4 rounded-xl font-bold text-sm text-white bg-green-600 hover:bg-green-700 transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>💬 Kirim via WhatsApp</span>
+                    </button>
+                    <button onclick="sendViaEmail()" class="py-3 px-4 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 transition flex items-center justify-center gap-2 shadow-sm">
+                        <span>✉️ Kirim via Email</span>
+                    </button>
+                </div>
+
+                <button onclick="downloadScreenshotAgain()" class="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-slate-700 bg-slate-100 hover:bg-slate-200 transition flex items-center justify-center gap-1.5">
+                    <span>⬇️ Unduh Ulang Gambar Screenshot (.PNG)</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification (Pengganti alert) -->
+    <div id="toast-notification" class="hidden fixed bottom-5 right-5 z-50 bg-slate-800 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 fade-in">
+        Pesan notifikasi
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-12">
+        <div class="max-w-5xl mx-auto px-4 text-center text-xs text-slate-500">
+            Modul Interaktif Matematika MTs Istimewa Amanatul Ummah
+        </div>
+    </footer>
+
+    <script>
+        // ==================== TOAST NOTIFICATION HELPER ====================
+        function showToast(message) {
+            const toast = document.getElementById('toast-notification');
+            toast.textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3500);
+        }
+
+        // ==================== TAB NAVIGATION ====================
+        function switchTab(tabName) {
+            const tabs = ['sudut', 'kesebangunan', 'kuis'];
+            tabs.forEach(t => {
+                const section = document.getElementById(`section-${t}`);
+                const btn = document.getElementById(`btn-tab-${t}`);
+                if (t === tabName) {
+                    section.classList.remove('hidden');
+                    btn.classList.remove('tab-inactive');
+                    btn.classList.add('tab-active');
+                } else {
+                    section.classList.add('hidden');
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                }
+            });
+        }
+
+        // ==================== SIMULASI 1: SUDUT ====================
+        let currentAngleMode = 'penyiku';
+
+        function setAngleMode(mode) {
+            currentAngleMode = mode;
+            const slider = document.getElementById('angle-slider');
+            const btnPenyiku = document.getElementById('mode-penyiku');
+            const btnPelurus = document.getElementById('mode-pelurus');
+
+            if (mode === 'penyiku') {
+                btnPenyiku.className = 'px-3 py-1.5 text-xs font-bold rounded-md bg-white text-blue-700 shadow-sm transition';
+                btnPelurus.className = 'px-3 py-1.5 text-xs font-bold rounded-md text-slate-600 hover:text-slate-900 transition';
+                slider.min = 5;
+                slider.max = 85;
+                if (parseInt(slider.value, 10) > 85) slider.value = 35;
+            } else {
+                btnPelurus.className = 'px-3 py-1.5 text-xs font-bold rounded-md bg-white text-indigo-700 shadow-sm transition';
+                btnPenyiku.className = 'px-3 py-1.5 text-xs font-bold rounded-md text-slate-600 hover:text-slate-900 transition';
+                slider.min = 15;
+                slider.max = 165;
+                if (parseInt(slider.value, 10) < 15) slider.value = 60;
+            }
+            updateAngleSim();
+        }
+
+        function updateAngleSim() {
+            const alpha = parseInt(document.getElementById('angle-slider').value, 10);
+            const total = currentAngleMode === 'penyiku' ? 90 : 180;
+            const beta = total - alpha;
+
+            document.getElementById('angle-alpha-label').textContent = `${alpha}°`;
+            document.getElementById('readout-alpha').textContent = `${alpha}°`;
+            document.getElementById('readout-beta-name').textContent = currentAngleMode === 'penyiku' ? 'Sudut Penyiku (β):' : 'Sudut Pelurus (β):';
+            document.getElementById('readout-beta').textContent = `${beta}°`;
+            document.getElementById('readout-total').textContent = `${alpha}° + ${beta}° = ${total}°`;
+
+            renderAngleSVG(alpha, beta, currentAngleMode);
+        }
+
+        function renderAngleSVG(alpha, beta, mode) {
+            const svg = document.getElementById('angle-svg');
+            const cx = mode === 'penyiku' ? 90 : 180;
+            const cy = 180;
+            const radius = 135;
+
+            const radAlpha = (alpha * Math.PI) / 180;
+            const rayX = cx + radius * Math.cos(radAlpha);
+            const rayY = cy - radius * Math.sin(radAlpha);
+
+            const arcR = 42;
+            const arcX = cx + arcR * Math.cos(radAlpha);
+            const arcY = cy - arcR * Math.sin(radAlpha);
+
+            if (mode === 'penyiku') {
+                svg.innerHTML = `
+                    <rect x="${cx}" y="${cy - 20}" width="20" height="20" fill="none" stroke="#94a3b8" stroke-width="1.5" />
+                    <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${cy - radius}" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="${cx}" y1="${cy}" x2="${cx + radius + 20}" y2="${cy}" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M ${cx} ${cy} L ${arcX} ${arcY} A ${arcR} ${arcR} 0 0 0 ${cx} ${cy - arcR} Z" fill="rgba(16, 185, 129, 0.25)" />
+                    <path d="M ${cx} ${cy} L ${cx + arcR} ${cy} A ${arcR} ${arcR} 0 0 0 ${arcX} ${arcY} Z" fill="rgba(59, 130, 246, 0.3)" />
+                    <line x1="${cx}" y1="${cy}" x2="${rayX}" y2="${rayY}" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="${cx}" cy="${cy}" r="5" fill="#1e293b"/>
+                    <text x="${cx + 55}" y="${cy - 12}" fill="#1d4ed8" font-size="13" font-weight="bold">α = ${alpha}°</text>
+                    <text x="${cx + 12}" y="${cy - 55}" fill="#047857" font-size="13" font-weight="bold">β = ${beta}°</text>
+                `;
+            } else {
+                const largeArcFlag = alpha > 180 ? 1 : 0;
+                svg.innerHTML = `
+                    <line x1="${cx - radius - 10}" y1="${cy}" x2="${cx + radius + 10}" y2="${cy}" stroke="#1e293b" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M ${cx} ${cy} L ${arcX} ${arcY} A ${arcR} ${arcR} 0 0 0 ${cx - arcR} ${cy} Z" fill="rgba(16, 185, 129, 0.25)" />
+                    <path d="M ${cx} ${cy} L ${cx + arcR} ${cy} A ${arcR} ${arcR} 0 ${largeArcFlag} 0 ${arcX} ${arcY} Z" fill="rgba(59, 130, 246, 0.3)" />
+                    <line x1="${cx}" y1="${cy}" x2="${rayX}" y2="${rayY}" stroke="#2563eb" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="${cx}" cy="${cy}" r="5" fill="#1e293b"/>
+                    <text x="${cx + 48}" y="${cy - 18}" fill="#1d4ed8" font-size="13" font-weight="bold">α = ${alpha}°</text>
+                    <text x="${cx - 95}" y="${cy - 18}" fill="#047857" font-size="13" font-weight="bold">β = ${beta}°</text>
+                `;
+            }
+        }
+
+        // ==================== SIMULASI 2: KESEBANGUNAN ====================
+        function updateSimilaritySim() {
+            const k = parseFloat(document.getElementById('scale-slider').value);
+            const p1 = 8;
+            const l1 = 4;
+            const p2 = +(p1 * k).toFixed(2);
+            const l2 = +(l1 * k).toFixed(2);
+
+            document.getElementById('scale-val-label').textContent = `${k}x`;
+            document.getElementById('ratio-p').textContent = `${p2} / ${p1} = ${k}`;
+            document.getElementById('ratio-l').textContent = `${l2} / ${l1} = ${k}`;
+
+            const svg = document.getElementById('sim-svg');
+            const w1 = 80;
+            const h1 = 40;
+            const w2 = w1 * k;
+            const h2 = h1 * k;
+
+            const startX1 = 30;
+            const startY1 = 160 - h1;
+            const startX2 = 165;
+            const startY2 = 160 - h2;
+
+            svg.innerHTML = `
+                <rect x="${startX1}" y="${startY1}" width="${w1}" height="${h1}" fill="rgba(59, 130, 246, 0.2)" stroke="#2563eb" stroke-width="2.5" rx="2"/>
+                <text x="${startX1 + w1/2}" y="${startY1 - 8}" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e40af">Bangun A</text>
+                <text x="${startX1 + w1/2}" y="${startY1 + h1 + 16}" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">${p1} cm</text>
+                <text x="${startX1 - 8}" y="${startY1 + h1/2 + 4}" text-anchor="end" font-size="11" font-weight="bold" fill="#334155">${l1} cm</text>
+
+                <rect x="${startX2}" y="${startY2}" width="${w2}" height="${h2}" fill="rgba(99, 102, 241, 0.2)" stroke="#4f46e5" stroke-width="2.5" rx="2"/>
+                <text x="${startX2 + w2/2}" y="${startY2 - 8}" text-anchor="middle" font-size="11" font-weight="bold" fill="#3730a3">Bangun B (k = ${k})</text>
+                <text x="${startX2 + w2/2}" y="${startY2 + h2 + 16}" text-anchor="middle" font-size="11" font-weight="bold" fill="#334155">${p2} cm</text>
+                <text x="${startX2 + w2 + 8}" y="${startY2 + h2/2 + 4}" text-anchor="start" font-size="11" font-weight="bold" fill="#334155">${l2} cm</text>
+            `;
+        }
+
+        // ==================== BANK SOAL & LOGIKA KUIS ====================
+        const rawQuizData = [
+            {
+                topic: "Sudut Berpenyiku",
+                question: "Besar penyiku dari sudut yang besarnya 37° adalah ....",
+                options: ["53°", "63°", "143°", "153°"],
+                correctIndex: 0,
+                hint: "Jumlah dua sudut yang saling berpenyiku adalah 90°.",
+                explanation: "Sudut berpenyiku berjumlah 90°. Maka penyiku dari 37° = 90° - 37° = 53°."
+            },
+            {
+                topic: "Sudut Berpelurus",
+                question: "Jika sudut P dan sudut Q saling berpelurus dengan besar ∠P = 118°, maka besar ∠Q adalah ....",
+                options: ["28°", "62°", "72°", "242°"],
+                correctIndex: 1,
+                hint: "Sudut lurus memiliki besar 180°.",
+                explanation: "Karena saling berpelurus, ∠P + ∠Q = 180°. Sehingga ∠Q = 180° - 118° = 62°."
+            },
+            {
+                topic: "Aljabar Sudut Lurus",
+                question: "Perhatikan gambar sudut berpelurus di atas. Nilai x yang memenuhi persamaan tersebut adalah ....",
+                svg: `<svg viewBox="0 0 300 130" class="w-64 h-auto">
+                        <line x1="20" y1="105" x2="280" y2="105" stroke="#1e293b" stroke-width="2.5"/>
+                        <line x1="150" y1="105" x2="215" y2="25" stroke="#2563eb" stroke-width="2.5"/>
+                        <path d="M 120 105 A 30 30 0 0 1 168 82" fill="none" stroke="#059669" stroke-width="2"/>
+                        <text x="85" y="85" font-size="13" font-weight="bold" fill="#047857">(4x + 10)°</text>
+                        <text x="180" y="88" font-size="13" font-weight="bold" fill="#1d4ed8">(2x + 20)°</text>
+                      </svg>`,
+                options: ["20°", "25°", "30°", "35°"],
+                correctIndex: 1,
+                hint: "Jumlahkan kedua bentuk aljabar tersebut lalu samakan dengan 180°.",
+                explanation: "(4x + 10) + (2x + 20) = 180° → 6x + 30 = 180° → 6x = 150° → x = 25°."
+            },
+            {
+                topic: "Aljabar Sudut Siku-Siku",
+                question: "Dua sudut saling berpenyiku memiliki perbandingan 2 : 3. Besar sudut yang paling besar adalah ....",
+                options: ["36°", "45°", "54°", "72°"],
+                correctIndex: 2,
+                hint: "Misalkan kedua sudut adalah 2x dan 3x, lalu jumlahkan menjadi 90°.",
+                explanation: "2x + 3x = 90° → 5x = 90° → x = 18°. Sudut terbesar adalah 3x = 3 × 18° = 54°."
+            },
+            {
+                topic: "Hubungan Penyiku & Pelurus",
+                question: "Besar pelurus suatu sudut adalah 135°. Besar penyiku sudut tersebut adalah ....",
+                options: ["35°", "45°", "55°", "65°"],
+                correctIndex: 1,
+                hint: "Cari dulu besar sudut awalnya dari informasi pelurus (180° - 135°).",
+                explanation: "Sudut awal = 180° - 135° = 45°. Maka penyiku dari sudut 45° adalah 90° - 45° = 45°."
+            },
+            {
+                topic: "Syarat Kesebangunan",
+                question: "Manakah pasangan bangun datar berikut yang PASTI sebangun?",
+                options: [
+                    "Dua buah persegi panjang",
+                    "Dua buah belah ketupat",
+                    "Dua buah segitiga sama sisi",
+                    "Dua buah segitiga sama kaki"
+                ],
+                correctIndex: 2,
+                hint: "Pilih bangun datar beraturan yang besar semua sudutnya selalu tetap.",
+                explanation: "Semua segitiga sama sisi memiliki sudut yang sama besar yaitu masing-masing 60° dan perbandingan sisinya selalu sama."
+            },
+            {
+                topic: "Kesebangunan Persegi Panjang",
+                question: "Sebuah foto berukuran 6 cm × 9 cm diperbesar sehingga sisi terpanjangnya menjadi 27 cm. Lebar foto setelah diperbesar adalah ....",
+                options: ["12 cm", "15 cm", "18 cm", "24 cm"],
+                correctIndex: 2,
+                hint: "Cari faktor perbesaran dari sisi terpanjang: 27 cm dibagi 9 cm.",
+                explanation: "Faktor skala k = 27 / 9 = 3. Maka lebar foto setelah diperbesar = 6 cm × 3 = 18 cm."
+            },
+            {
+                topic: "Segitiga Sebangun",
+                question: "Pada segitiga ABC di atas, DE sejajar BC. Jika AD = 4 cm, DB = 6 cm, dan DE = 6 cm, maka panjang BC adalah ....",
+                svg: `<svg viewBox="0 0 260 160" class="w-60 h-auto">
+                        <polygon points="130,15 45,145 215,145" fill="rgba(59,130,246,0.1)" stroke="#1e293b" stroke-width="2"/>
+                        <line x1="96" y1="67" x2="164" y2="67" stroke="#2563eb" stroke-width="2.5"/>
+                        <text x="130" y="12" text-anchor="middle" font-size="12" font-weight="bold">A</text>
+                        <text x="35" y="150" font-size="12" font-weight="bold">B</text>
+                        <text x="220" y="150" font-size="12" font-weight="bold">C</text>
+                        <text x="82" y="68" font-size="12" font-weight="bold" fill="#1d4ed8">D</text>
+                        <text x="170" y="68" font-size="12" font-weight="bold" fill="#1d4ed8">E</text>
+                        <text x="98" y="45" font-size="11" fill="#334155">4</text>
+                        <text x="65" y="110" font-size="11" fill="#334155">6</text>
+                        <text x="130" y="62" text-anchor="middle" font-size="11" font-weight="bold" fill="#1d4ed8">6 cm</text>
+                      </svg>`,
+                options: ["9 cm", "12 cm", "15 cm", "18 cm"],
+                correctIndex: 2,
+                hint: "Hati-hati! Gunakan perbandingan AD / AB = DE / BC, di mana AB = AD + DB.",
+                explanation: "Panjang AB = 4 + 6 = 10 cm. Perbandingan: AD/AB = DE/BC → 4/10 = 6/BC → 4 × BC = 60 → BC = 15 cm."
+            },
+            {
+                topic: "Aplikasi Kesebangunan",
+                question: "Sebuah tiang bendera setinggi 6 m memiliki bayangan 4 m. Pada saat yang sama, bayangan sebuah pohon adalah 10 m. Tinggi pohon tersebut adalah ....",
+                options: ["12 meter", "15 meter", "16 meter", "24 meter"],
+                correctIndex: 1,
+                hint: "Bandingkan tinggi tiang dengan tinggi pohon, sama dengan bayangan tiang dibagi bayangan pohon.",
+                explanation: "Tinggi pohon / 6 = 10 / 4 → Tinggi pohon = (10 × 6) / 4 = 60 / 4 = 15 meter."
+            },
+            {
+                topic: "Trapesium Sebangun",
+                question: "Dua trapesium ABCD dan EFGH sebangun. Jika panjang AB = 12 cm bersesuaian dengan EF = 18 cm, dan tinggi trapesium ABCD adalah 8 cm, maka tinggi trapesium EFGH adalah ....",
+                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                correctIndex: 1,
+                hint: "Gunakan perbandingan sisi bersesuaian: 12 / 18 = 8 / t.",
+                explanation: "12 / 18 = 8 / t → disederhanakan menjadi 2 / 3 = 8 / t → 2t = 24 → t = 12 cm."
+            }
+        ];
+
+        // State Peserta & Kuis
+        let studentName = "";
+        let studentClass = "";
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredCurrent = false;
+
+        // State Screenshot
+        let capturedDataUrl = "";
+        let capturedBlob = null;
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Memulai kuis setelah mengisi form Nama & Kelas
+        function startQuiz(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('student-name').value.trim();
+            const classInput = document.getElementById('student-class').value;
+
+            if (!nameInput || !classInput) {
+                showToast("⚠️ Harap isi Nama Lengkap dan pilih Kelas terlebih dahulu!");
+                return;
+            }
+
+            studentName = nameInput;
+            studentClass = classInput;
+
+            // Tampilkan nama & kelas di header area soal
+            document.getElementById('active-student-display').textContent = `Siswa: ${studentName}`;
+            document.getElementById('active-class-display').textContent = studentClass;
+
+            quizQuestions = shuffleArray(rawQuizData);
+            currentQuestionIndex = 0;
+            score = 0;
+            answeredCurrent = false;
+
+            document.getElementById('quiz-intro-view').classList.add('hidden');
+            document.getElementById('quiz-result-view').classList.add('hidden');
+            document.getElementById('quiz-active-view').classList.remove('hidden');
+
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            answeredCurrent = false;
+            const q = quizQuestions[currentQuestionIndex];
+            const totalQ = quizQuestions.length;
+
+            document.getElementById('quiz-badge').textContent = `Soal ${currentQuestionIndex + 1} dari ${totalQ}`;
+            document.getElementById('quiz-topic-tag').textContent = q.topic;
+            document.getElementById('quiz-live-score').textContent = score * 10;
+            document.getElementById('quiz-progress-bar').style.width = `${((currentQuestionIndex + 1) / totalQ) * 100}%`;
+
+            const diagContainer = document.getElementById('quiz-diagram-container');
+            if (q.svg) {
+                diagContainer.innerHTML = q.svg;
+                diagContainer.classList.remove('hidden');
+            } else {
+                diagContainer.innerHTML = '';
+                diagContainer.classList.add('hidden');
+            }
+
+            document.getElementById('quiz-question-text').textContent = q.question;
+
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            feedbackBox.classList.add('hidden');
+            const hintBox = document.getElementById('quiz-hint-box');
+            hintBox.classList.add('hidden');
+            hintBox.textContent = `💡 Petunjuk: ${q.hint}`;
+
+            const nextBtn = document.getElementById('btn-next-question');
+            nextBtn.disabled = true;
+            nextBtn.textContent = currentQuestionIndex === totalQ - 1 ? 'Lihat Hasil Akhir 🏆' : 'Soal Berikutnya →';
+
+            const optionsContainer = document.getElementById('quiz-options-container');
+            optionsContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D'];
+
+            q.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full text-left p-4 rounded-xl border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50/40 transition flex items-center gap-3.5 font-medium text-slate-700';
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center shrink-0 border border-slate-200">
+                        ${letters[idx]}
+                    </span>
+                    <span>${optText}</span>
+                `;
+                btn.onclick = () => selectAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIdx) {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+
+            const q = quizQuestions[currentQuestionIndex];
+            const isCorrect = selectedIdx === q.correctIndex;
+            const optionButtons = document.getElementById('quiz-options-container').children;
+
+            for (let i = 0; i < optionButtons.length; i++) {
+                const btn = optionButtons[i];
+                btn.disabled = true;
+                btn.classList.remove('hover:border-blue-400', 'hover:bg-blue-50/40');
+
+                if (i === q.correctIndex) {
+                    btn.classList.remove('border-slate-200');
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900');
+                    btn.querySelector('span:first-child').className = 'w-8 h-8 rounded-lg bg-emerald-600 text-white font-bold flex items-center justify-center shrink-0';
+                } else if (i === selectedIdx && !isCorrect) {
+                    btn.classList.remove('border-slate-200');
+                    btn.classList.add('border-rose-500', 'bg-rose-50', 'text-rose-900');
+                    btn.querySelector('span:first-child').className = 'w-8 h-8 rounded-lg bg-rose-600 text-white font-bold flex items-center justify-center shrink-0';
+                } else {
+                    btn.classList.add('opacity-60');
+                }
+            }
+
+            if (isCorrect) {
+                score++;
+                document.getElementById('quiz-live-score').textContent = score * 10;
+            }
+
+            const feedbackBox = document.getElementById('quiz-feedback-box');
+            const feedbackTitle = document.getElementById('quiz-feedback-title');
+            const feedbackExp = document.getElementById('quiz-feedback-explanation');
+
+            feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'border-emerald-200', 'bg-rose-50', 'border-rose-200');
+            if (isCorrect) {
+                feedbackBox.classList.add('bg-emerald-50', 'border-emerald-200');
+                feedbackTitle.className = 'font-bold text-base mb-1 text-emerald-800';
+                feedbackTitle.textContent = '✅ Jawaban Benar!';
+            } else {
+                feedbackBox.classList.add('bg-rose-50', 'border-rose-200');
+                feedbackTitle.className = 'font-bold text-base mb-1 text-rose-800';
+                feedbackTitle.textContent = '❌ Kurang Tepat!';
+            }
+            feedbackExp.textContent = q.explanation;
+
+            document.getElementById('btn-next-question').disabled = false;
+        }
+
+        function toggleHint() {
+            const hintBox = document.getElementById('quiz-hint-box');
+            hintBox.classList.toggle('hidden');
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizQuestions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('quiz-active-view').classList.add('hidden');
+            const resultView = document.getElementById('quiz-result-view');
+            resultView.classList.remove('hidden');
+
+            const finalScore = score * 10;
+            document.getElementById('result-student-name').textContent = studentName;
+            document.getElementById('result-student-class').textContent = studentClass;
+            document.getElementById('result-score-big').textContent = finalScore;
+            document.getElementById('result-detail-text').textContent = `Benar ${score} dari ${quizQuestions.length} soal`;
+
+            // Timestamp saat selesai
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('id-ID', {
+                day: 'numeric', month: 'long', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('result-timestamp').textContent = `MTs Istimewa Amanatul Ummah • ${formattedDate} WIB`;
+
+            const emojiEl = document.getElementById('result-emoji');
+            const subEl = document.getElementById('result-subtitle');
+
+            if (finalScore >= 80) {
+                emojiEl.textContent = '🏆';
+                subEl.textContent = 'Luar biasa! Pemahamanmu tentang sudut dan kesebangunan sangat kuat.';
+            } else if (finalScore >= 60) {
+                emojiEl.textContent = '👏';
+                subEl.textContent = 'Cukup baik! Terus berlatih untuk meraih nilai sempurna.';
+            } else {
+                emojiEl.textContent = '📚';
+                subEl.textContent = 'Jangan menyerah! Pelajari kembali simulasi materi lalu coba lagi.';
+            }
+        }
+
+        function restartQuiz() {
+            // Kembali ke form awal agar siswa bisa mengecek nama/kelas atau langsung mulai ulang
+            document.getElementById('quiz-result-view').classList.add('hidden');
+            document.getElementById('quiz-active-view').classList.add('hidden');
+            document.getElementById('quiz-intro-view').classList.remove('hidden');
+        }
+
+        // ==================== FITUR SCREENSHOT & KIRIM KE GURU ====================
+        async function captureAndOpenSendModal() {
+            const btnSend = document.getElementById('btn-send-score');
+            const originalText = btnSend.innerHTML;
+            btnSend.disabled = true;
+            btnSend.innerHTML = `<span>⏳ Mengambil Screenshot Nilai...</span>`;
+
+            try {
+                const captureElement = document.getElementById('score-capture-card');
+                const canvas = await html2canvas(captureElement, {
+                    scale: 2, // Resolusi tajam (Retina)
+                    backgroundColor: '#ffffff',
+                    useCORS: true
+                });
+
+                capturedDataUrl = canvas.toDataURL('image/png');
+                document.getElementById('screenshot-preview-img').src = capturedDataUrl;
+
+                // Konversi canvas ke Blob untuk Web Share API & auto-download
+                canvas.toBlob((blob) => {
+                    capturedBlob = blob;
+                    
+                    // Cek apakah browser mendukung berbagi file secara langsung (Native Share)
+                    const file = new File([blob], getScreenshotFilename(), { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        document.getElementById('btn-native-share').classList.remove('hidden');
+                    } else {
+                        document.getElementById('btn-native-share').classList.add('hidden');
+                    }
+                }, 'image/png');
+
+                // Otomatis unduh gambar screenshot ke perangkat siswa agar siap dilampirkan
+                triggerDownload(capturedDataUrl, getScreenshotFilename());
+
+                // Buka modal kirim
+                document.getElementById('send-modal').classList.remove('hidden');
+            } catch (err) {
+                console.error(err);
+                showToast("❌ Gagal mengambil screenshot. Silakan coba lagi.");
+            } finally {
+                btnSend.disabled = false;
+                btnSend.innerHTML = originalText;
+            }
+        }
+
+        function getScreenshotFilename() {
+            const cleanName = studentName.replace(/[^a-zA-Z0-9]/g, '_');
+            const cleanClass = studentClass.replace(/\s+/g, '_');
+            return `Nilai_Matematika_${cleanName}_${cleanClass}.png`;
+        }
+
+        function triggerDownload(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function downloadScreenshotAgain() {
+            if (!capturedDataUrl) return;
+            triggerDownload(capturedDataUrl, getScreenshotFilename());
+            showToast("✅ Gambar screenshot berhasil diunduh ulang!");
+        }
+
+        function closeSendModal() {
+            document.getElementById('send-modal').classList.add('hidden');
+        }
+
+        // Berbagi file gambar langsung (bekerja sangat baik di HP Android/iOS)
+        async function shareNativeFile() {
+            if (!capturedBlob) return;
+            const finalScore = score * 10;
+            const file = new File([capturedBlob], getScreenshotFilename(), { type: 'image/png' });
+            const shareText = `Assalamu'alaikum Bapak/Ibu Guru, berikut hasil kuis Matematika saya:\nNama: ${studentName}\nKelas: ${studentClass}\nNilai: ${finalScore} (Benar ${score}/${quizQuestions.length})`;
+
+            try {
+                await navigator.share({
+                    title: 'Hasil Kuis Matematika SMP',
+                    text: shareText,
+                    files: [file]
+                });
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showToast("⚠️ Gagal membuka menu berbagi. Gunakan tombol WhatsApp atau Email di bawah.");
+                }
+            }
+        }
+
+        // Kirim via WhatsApp Web / App
+        function sendViaWhatsApp() {
+            const finalScore = score * 10;
+            let rawPhone = document.getElementById('teacher-wa-input').value.trim().replace(/[^0-9]/g, '');
+            if (rawPhone.startsWith('0')) {
+                rawPhone = '62' + rawPhone.slice(1);
+            }
+
+            const message = `Assalamu'alaikum Bapak/Ibu Guru, saya telah menyelesaikan Kuis Matematika (Sudut & Kesebangunan).\n\n*Nama:* ${studentName}\n*Kelas:* ${studentClass}\n*Nilai Akhir:* ${finalScore} (Benar ${score} dari ${quizQuestions.length} soal)\n\n_(Bukti screenshot nilai telah diunduh dan saya lampirkan bersama pesan ini)_`;
+            const encodedMsg = encodeURIComponent(message);
+
+            const waUrl = rawPhone 
+                ? `https://wa.me/${rawPhone}?text=${encodedMsg}`
+                : `https://wa.me/?text=${encodedMsg}`;
+
+            window.open(waUrl, '_blank');
+            showToast("📲 Membuka WhatsApp... Jangan lupa lampirkan file screenshot yang terunduh!");
+        }
+
+        // Kirim via Email (mailto)
+        function sendViaEmail() {
+            const finalScore = score * 10;
+            const teacherEmail = document.getElementById('teacher-email-input').value.trim();
+            const subject = encodeURIComponent(`Hasil Kuis Matematika - ${studentName} (${studentClass})`);
+            const body = encodeURIComponent(
+                `Assalamu'alaikum Bapak/Ibu Guru,\n\nBerikut adalah laporan hasil pengerjaan Kuis Matematika (Sudut & Kesebangunan):\n\n` +
+                `Nama Siswa : ${studentName}\n` +
+                `Kelas      : ${studentClass}\n` +
+                `Nilai Akhir: ${finalScore} (Benar ${score} dari ${quizQuestions.length} soal)\n\n` +
+                `Catatan: File gambar screenshot bukti nilai (${getScreenshotFilename()}) telah diunduh di perangkat dan dilampirkan pada email ini.\n\nTerima kasih.`
+            );
+
+            window.location.href = `mailto:${teacherEmail}?subject=${subject}&body=${body}`;
+            showToast("✉️ Membuka aplikasi Email... Silakan lampirkan gambar screenshot yang terunduh!");
+        }
+
+        // ==================== INITIALIZE ON LOAD ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            updateAngleSim();
+            updateSimilaritySim();
+        });
+    </script>
+</body>
+</html>
